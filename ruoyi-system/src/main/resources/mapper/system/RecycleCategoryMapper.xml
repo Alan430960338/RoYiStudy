@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RecycleCategoryMapper">
+    
+    <resultMap type="RecycleCategory" id="RecycleCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="imageFiles"    column="image_files"    />
+        <result property="priceMin"    column="price_min"    />
+        <result property="priceMax"    column="price_max"    />
+        <result property="yonyouCategoryId"    column="yonyou_category_id"    />
+        <result property="yonyouProductId"    column="yonyou_product_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectRecycleCategoryVo">
+        select id, name, image_files, price_min, price_max, yonyou_category_id, yonyou_product_id, remark, create_user, create_time, update_user, update_time, deleted, tenant_id from recycle_category
+    </sql>
+
+    <select id="selectRecycleCategoryList" parameterType="RecycleCategory" resultMap="RecycleCategoryResult">
+        <include refid="selectRecycleCategoryVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="imageFiles != null  and imageFiles != ''"> and image_files = #{imageFiles}</if>
+            <if test="priceMin != null "> and price_min = #{priceMin}</if>
+            <if test="priceMax != null "> and price_max = #{priceMax}</if>
+            <if test="yonyouCategoryId != null  and yonyouCategoryId != ''"> and yonyou_category_id = #{yonyouCategoryId}</if>
+            <if test="yonyouProductId != null  and yonyouProductId != ''"> and yonyou_product_id = #{yonyouProductId}</if>
+            <if test="createUser != null "> and create_user = #{createUser}</if>
+            <if test="updateUser != null "> and update_user = #{updateUser}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectRecycleCategoryById" parameterType="Long" resultMap="RecycleCategoryResult">
+        <include refid="selectRecycleCategoryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRecycleCategory" parameterType="RecycleCategory" useGeneratedKeys="true" keyProperty="id">
+        insert into recycle_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="imageFiles != null and imageFiles != ''">image_files,</if>
+            <if test="priceMin != null">price_min,</if>
+            <if test="priceMax != null">price_max,</if>
+            <if test="yonyouCategoryId != null">yonyou_category_id,</if>
+            <if test="yonyouProductId != null">yonyou_product_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="imageFiles != null and imageFiles != ''">#{imageFiles},</if>
+            <if test="priceMin != null">#{priceMin},</if>
+            <if test="priceMax != null">#{priceMax},</if>
+            <if test="yonyouCategoryId != null">#{yonyouCategoryId},</if>
+            <if test="yonyouProductId != null">#{yonyouProductId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRecycleCategory" parameterType="RecycleCategory">
+        update recycle_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="imageFiles != null and imageFiles != ''">image_files = #{imageFiles},</if>
+            <if test="priceMin != null">price_min = #{priceMin},</if>
+            <if test="priceMax != null">price_max = #{priceMax},</if>
+            <if test="yonyouCategoryId != null">yonyou_category_id = #{yonyouCategoryId},</if>
+            <if test="yonyouProductId != null">yonyou_product_id = #{yonyouProductId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRecycleCategoryById" parameterType="Long">
+        delete from recycle_category where id = #{id}
+    </delete>
+
+    <delete id="deleteRecycleCategoryByIds" parameterType="String">
+        delete from recycle_category where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
